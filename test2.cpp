@@ -103,6 +103,26 @@ void printBoard() {
     }
 }
 
+void randomFirstMove(char aiPlayer) {
+    int emptyCells[9][2];
+    int count = 0;
+    
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (board[i][j] == ' ') {
+                emptyCells[count][0] = i;
+                emptyCells[count][1] = j;
+                count++;
+            }
+        }
+    }
+    
+    if (count > 0) {
+        int randomIndex = rand() % count;
+        board[emptyCells[randomIndex][0]][emptyCells[randomIndex][1]] = aiPlayer;
+    }
+}
+
 // AI vs AI match
 int main() {
     char currentAI = 'X'; // 'X' starts first
