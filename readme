@@ -1,0 +1,3 @@
+Compilation
+
+g++ -o ttt main.cpp TicTacToe.cpp  AlphaBetaAgent.cpp Player.cpp MinMaxAgent.cpp Agent.cpp

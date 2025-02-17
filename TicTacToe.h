@@ -33,6 +33,12 @@ public:
     // Liste des coups possibles : toutes les cases vides
     std::vector<Action> getLegalActions(const State& state) const override;
 
+    std::vector<Action> getWeightedLegalActions(const State &state) const;
+
+    int evaluateCell(const State &state, const Action &action) const;
+
+    double evaluatePosition(const State &state, PlayerId player) const;
+
     // On applique l'action : on place le pion du joueur courant dans la case "action.index"
     State applyAction(const State& state, const Action& action) const override;
 

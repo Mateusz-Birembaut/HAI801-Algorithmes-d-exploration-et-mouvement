@@ -11,17 +11,13 @@ public:
     // Constructeur
     MinMaxAgent(PlayerId player);
 
-    // Choix d'action selon Min-Max (version simplifiée)
     Action chooseAction(const Game& game, const State& state) override;
 
 private:
     std::mt19937 rng;
-    
-    // Partie MAX
-    double maxValue(const Game& game, const State& state);
 
-    // Partie MIN
-    double minValue(const Game& game, const State& state);
+    std::pair<double, Action> minimax(const Game &game, const State &state, bool maximizingPlayer, int &count);
+    std::pair<double, Action> minimax(const Game &game, const State &state, bool maximizingPlayer);
 };
 
 #endif // MINMAXAGENT_H

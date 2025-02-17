@@ -67,9 +67,9 @@ void TicTacToeN::getResult(State& state, const Agent& agent1, const Agent& agent
     double u2 = getUtility(state, agent2.getPlayerId());
 
     if (u1 == 1.0) {
-        std::cout << "Agent1 (joueur " << agent1.getPlayerId() << ") gagne !\n";
+        std::cout << "Joueur 1 gagne !\n";
     } else if (u2 == 1.0) {
-        std::cout << "Agent2 (joueur " << agent2.getPlayerId() << ") gagne !\n";
+        std::cout << "Joueur 2 gagne !\n";
     } else {
         std::cout << "Match nul !\n";
     }

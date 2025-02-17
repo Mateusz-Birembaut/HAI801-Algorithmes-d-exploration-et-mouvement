@@ -22,8 +22,10 @@ void playMatch(Game& game, Agent& agent1, Agent& agent2) {
         // pour chaque joueur, on choisit une action
         if (current == agent1.getPlayerId()) {
             a = agent1.chooseAction(game, state);
+            std::cout << "Joueur X choisit l'action : " << a.index << std::endl;
         } else {
             a = agent2.chooseAction(game, state);
+            std::cout << "Joueur O choisit l'action : " << a.index << std::endl;
         }
 
         // fait l'action choisie
@@ -47,10 +49,10 @@ int main() {
     TicTacToeN game(n);
 
     // creation des deux agents
-    AlphaBetaAgent agent0(0);  // = X
-    AlphaBetaAgent agent1(1);  // = O
+    AlphaBetaAgent joueur1(0);  // = X
+    AlphaBetaAgent joueur2(1);  // = O
 
-    playMatch(game, agent0, agent1);
+    playMatch(game, joueur1, joueur2);
 
     return 0;
 }

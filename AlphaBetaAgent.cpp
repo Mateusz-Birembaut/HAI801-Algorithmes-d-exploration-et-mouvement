@@ -5,73 +5,55 @@ AlphaBetaAgent::AlphaBetaAgent(PlayerId player)
 }
 
 Action AlphaBetaAgent::chooseAction(const Game& game, const State& state) {
-    double bestValue = NEG_INF;
-    std::vector<Action> bestActions;
+    double alpha = -INFINITY;
+    double beta = INFINITY;
+    int count = 0;
+    Action action = minimax(game, state, alpha, beta, true, count).second;
+    std::cout << "Nombre de noeuds explorés : " << count << std::endl;
+    return action;
+} 
 
-    double alpha = NEG_INF;
-    double beta = POS_INF;
-
-    // Récupère toutes les actions légales
-    auto actions = game.getLegalActions(state);
-
-
-    for (const auto& action : actions) {
-        // On simule l'action
-        State nextState = game.applyAction(state, action);
-        // Comme on est "max" (notre joueur),
-        // on regarde la valeur de l'état suivant en mode "min"
-        double value = alphaBetaMin(game, nextState, alpha, beta);
-
-        if (value == bestValue) {
-            bestActions.push_back(action);
-        } else if (value > bestValue) {
-            bestValue = value;
-            bestActions.clear();
-            bestActions.push_back(action);
-        }
-    }
-
-    // On choisit une action aléatoire parmi les meilleures
-    std::uniform_int_distribution<size_t> dist(0, bestActions.size() - 1);
-    Action bestAction = bestActions[dist(rng)];
-
-    return bestAction;
-}
-
-double AlphaBetaAgent::alphaBetaMax(const Game& game, const State& state, double alpha, double beta) {
+std::pair<double, Action> AlphaBetaAgent::minimax(const Game& game, const State& state, double alpha, double beta, bool maximizingPlayer, int & count) {
     if (game.isTerminal(state)) {
-        return game.getUtility(state, this->m_player);
+        return {game.getUtility(state, this->m_player), Action()};
     }
-    double value = NEG_INF;
-    auto actions = game.getLegalActions(state);
-    
-    for (const auto& action : actions) {
-        State nextState = game.applyAction(state, action);
-        value = std::max(value, alphaBetaMin(game, nextState, alpha, beta));
-        alpha = std::max(alpha, value);
-        if (alpha >= beta) {
-            // Coupure : inutile d'explorer les autres actions
-            break;
-        }
-    }
-    return value;
-}
+    double bestValue;
+    Action bestAction;
 
-double AlphaBetaAgent::alphaBetaMin(const Game& game, const State& state, double alpha, double beta) {
-    if (game.isTerminal(state)) {
-        return game.getUtility(state, this->m_player);
-    }
-    double value = POS_INF;
-    auto actions = game.getLegalActions(state);
-    
-    for (const auto& action : actions) {
-        State nextState = game.applyAction(state, action);
-        value = std::min(value, alphaBetaMax(game, nextState, alpha, beta));
-        beta = std::min(beta, value);
-        if (alpha >= beta) {
-            // Coupure : inutile d'explorer les autres actions
-            break;
+    if (maximizingPlayer) {
+        bestValue = NEG_INF;
+        auto actions = game.getLegalActions(state);
+        std::shuffle(actions.begin(), actions.end(), rng);
+        for (const auto& action : actions) {
+            State nextState = game.applyAction(state, action);
+            double value = minimax(game, nextState, alpha, beta, false, count).first;
+            count++;
+            if (value > bestValue) {
+                bestValue = value;
+                bestAction = action;
+            }
+            alpha = std::max(alpha, value);
+            if (beta <= alpha) {
+                break;
+            }
+        }
+    } else {
+        bestValue = POS_INF;
+        auto actions = game.getLegalActions(state);
+        shuffle(actions.begin(), actions.end(), rng);
+        for (const auto& action : actions) {
+            State nextState = game.applyAction(state, action);
+            double value = minimax(game, nextState, alpha, beta, true, count).first;
+            count++;
+            if (value < bestValue) {
+                bestValue = value;
+                bestAction = action;
+            }
+            beta = std::min(beta, value);
+            if (beta <= alpha) {
+                break;
+            }
         }
     }
-    return value;
+    return {bestValue, bestAction};
 }

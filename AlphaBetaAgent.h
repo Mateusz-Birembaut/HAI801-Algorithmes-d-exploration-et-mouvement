@@ -16,8 +16,8 @@ private:
 
     std::mt19937 rng;
 
-    double alphaBetaMax(const Game& game, const State& state, double alpha, double beta);
-    double alphaBetaMin(const Game& game, const State& state, double alpha, double beta);
+    std::pair<double, Action> minimax(const Game &game, const State &state, double alpha, double beta, bool maximizingPlayer, int &count);
+    std::pair<double, Action> minimax(const Game &game, const State &state, double alpha, double beta, bool maximizingPlayer);
 };
 
 #endif // ALPHABETAAGENT_H
