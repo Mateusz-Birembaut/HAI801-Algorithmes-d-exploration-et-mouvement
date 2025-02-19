@@ -1,1 +1,5 @@
 .vscode/
+.idea/
+ttt
+main
+*.o
