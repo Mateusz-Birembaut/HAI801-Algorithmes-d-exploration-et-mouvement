@@ -49,7 +49,7 @@ int main() {
     TicTacToeN game(n);
 
     // creation des deux agents
-    AlphaBetaAgent joueur1(0);  // = X
+    Player joueur1(0);  // = X
     AlphaBetaAgent joueur2(1);  // = O
 
     playMatch(game, joueur1, joueur2);
